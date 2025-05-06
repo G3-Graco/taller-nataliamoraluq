@@ -12,6 +12,8 @@ namespace Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
+        //agg user aqui tmb aaaaaaaaaaaaaaaa
+        //q tabla con que o con quien aqui
         public DbSet<Personaje> Characters { get; set; }
         public DbSet<Mision> Misions { get; set; }
         public DbSet<Objeto> Objetos { get; set; }
@@ -27,7 +29,7 @@ namespace Infrastructure.Data
         public DbSet<Objetivo> Objetivo { get; set; }
         public DbSet<PersonajeMision> PersonajeMisiones { get; set; }
 
-
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -49,6 +51,8 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfiguration(new RanuraConfiguration());
             modelBuilder.ApplyConfiguration(new PersonajeMisionConfiguration());
             modelBuilder.ApplyConfiguration(new ObjetivoConfiguration());
+            //esto es aprte de aqui pero se maneja con lo de las migrations
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
 
 

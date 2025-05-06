@@ -10,6 +10,7 @@ namespace Infrastructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
+        //agg user aqui tmb aaaaaaaaaaaaaaaa
         private readonly AppDbContext _context;
         private PersonajeRepository  _personajeRepository;
         private HabilidadRepository  _habilidadRepository;
@@ -25,6 +26,7 @@ namespace Infrastructure.Data
         private RanuraRepository _ranuraRepository;
         private PersonajeMisionRepository _personajeMision;
         private ObjetivoRepository _objetivoRepository;
+        private UserRepository _userRepository; //* aqui
         public UnitOfWork(AppDbContext context)
         {
             this._context = context;
@@ -45,7 +47,9 @@ namespace Infrastructure.Data
         public IPersonajeMisionRepository PersonajeMisionRepository => _personajeMision ??= new PersonajeMisionRepository(_context);
         public IObjetivoRepository ObjetivoRepository => _objetivoRepository ??= new ObjetivoRepository(_context);
 
-
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        // aqui se termina de registrar/ implementar el repositorio (pasandole 
+        // el context) en la Unidad de Trabajo
         public async Task<int> CommitAsync()
         {
             return await _context.SaveChangesAsync();

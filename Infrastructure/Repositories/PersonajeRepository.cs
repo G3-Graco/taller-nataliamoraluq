@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories
                                     .Include(x => x.PersonajeMisiones).FirstAsync(x => x.id == id);
         }
 
-
+        //esto debe estar reg en su contrato IPersonajeRepo
         public async ValueTask<Personaje> GetByIdUbicacionAsync(int id)
         {
             return await base.dbSet.FirstAsync(personaje => personaje.ubicacionId == id);
