@@ -2,6 +2,9 @@ using System.Text;
 using System.Security.Claims;
 // tokens - jwt
 using Microsoft.IdentityModel.Tokens;
+
+using Microsoft.AspNetCore.Identity; //para hashing
+
 using System.IdentityModel.Tokens.Jwt;
 // capas API
 using Core.Entities;
@@ -26,6 +29,7 @@ namespace Services.Services
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _passwordHasherService = new PasswordHasherService();
         }
         private List <User> _users = new List<User>
         { 
@@ -53,7 +57,8 @@ namespace Services.Services
         }
 
         //func Login
-        public async Task <string> Login(User user)
+        //login vers base del prof.
+        /*public async Task <string> Login(User user)
         {
             //!*: deberiamos de usar los validators aqui tmb? or not?
             //al iniciar sesion --- buscamos el usuario
@@ -85,7 +90,50 @@ namespace Services.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string userToken = tokenHandler.WriteToken(token);
             return userToken;
+        } */
+
+        
+        //login con verificacion de la password hashed
+        
+        public async Task<string> Login(User user)
+        {
+           //var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName); // Buscar solo por UserName
+
+            var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName, user.Password);
+            //var LoginUser = _users.SingleOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+
+            if (LoginUser == null)
+            {
+                return string.Empty;
+            }
+
+            // Verificar la contraseña hasheada
+            var passwordVerificationResult = _passwordHasherService.VerifyPassword(LoginUser.Password, user.Password);
+
+            if (passwordVerificationResult == PasswordVerificationResult.Success)
+            {
+                // --- Generamos el token JWT aqui ---
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes("6f4d75aab32aef76b24c058d1bf7b979");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, LoginUser.UserName),
+                        new Claim("id", LoginUser.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddMinutes(30),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                string userToken = tokenHandler.WriteToken(token);
+                return userToken;
+            }
+
+            return string.Empty; // Contraseña incorrecta
         }
+        
+        
 
         //prueba hasheo con password hasher
         public async Task<bool> Register(string UserName, string Password)
