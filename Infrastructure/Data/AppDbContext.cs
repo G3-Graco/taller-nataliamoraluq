@@ -51,7 +51,7 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfiguration(new RanuraConfiguration());
             modelBuilder.ApplyConfiguration(new PersonajeMisionConfiguration());
             modelBuilder.ApplyConfiguration(new ObjetivoConfiguration());
-            //esto es aprte de aqui pero se maneja con lo de las migrations
+            //esto es parte de aqui pero se maneja con lo de las migrations
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
 

@@ -14,11 +14,13 @@ namespace Core.Interfaces.Services
         // modificacion aqui, preguntar al prof
         //string
         Task <string> Login(User user); //login hecho por el prof
-
-        //the other endpoints
-        //Task<string> Login(int idUser, string UserName, string Password); //por ej
-        //Task<User> Register(int idUser, string UserName, string Password); 
-        // **: Task<User> SearchUser(por id se pudiera); 
-        //Task<User> SearchUser(string UserName, string Password); en el repo: sql here
+        //Task<User> Register(string UserName, string Password); 
+        //con el hasheo de password
+        Task<bool> Register(string UserName, string Password); 
+        // **
+        Task<User> SearchUser(string UserName, string Password); //en el repo: sql here
+        //Task<User> SearchById(int id); 
+        //Task<Entidad> GetById(int id);
+        
     }
 }

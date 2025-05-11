@@ -24,11 +24,11 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "API Gracosoft .NET CORe",
-        Description = "Aplicaci�n elaborada durante las clases del 1 al 9 de la asignatura .Net Core, se encarga del procesamiento de la l�gica de un videojuego RPG.",
+        Description = "Aplicacion elaborada durante las clases del 1 al 9 de la asignatura .Net Core, se encarga del procesamiento de la logica de un videojuego RPG.",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
-            Name = "Guillermo Gim�nez",
+            Name = "Guillermo Gimenez",
             Url = new Uri("https://github.com/GGimenezG/GracoNETCore")
         },
         License = new OpenApiLicense

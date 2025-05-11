@@ -10,7 +10,7 @@ namespace Core.Interfaces.Repositories
     {
         // Task<IEnumerable<Character>> GetAllAbilitysAsync();
         // Task<IEnumerable<Character>> GetAllEquipoAsync();
-         ValueTask<Personaje> GetByIdUbicacionAsync(int id);
+        ValueTask<Personaje> GetByIdUbicacionAsync(int id); //specific ValueTask
         
     }
 }

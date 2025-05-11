@@ -10,7 +10,7 @@ namespace Infrastructure.Data.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        //requiere migration, cierto? sipi pero cm el viejo ya lo hizo, no haec falta
+        //requiere migration, cierto?:> sipi pero cm osmar ya lo hizo, ESTA VEZ no haec falta
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
