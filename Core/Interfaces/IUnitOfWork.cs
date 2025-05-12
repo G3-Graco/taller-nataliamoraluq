@@ -15,7 +15,7 @@ public interface IUnitOfWork : IDisposable
         IEstadisticaRepository EstadisticaRepository { get; }
         IRanuraRepository RanuraRepository { get; }
         ITipoObjetoRepository TipoObjetoRepository { get; }
-        IUserRepository UserRepository { get; }  //-> error aqui de accesibilidad *
+        IUserRepository UserRepository { get; }  //
 
     Task<int> CommitAsync();
     }

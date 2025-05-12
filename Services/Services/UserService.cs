@@ -36,6 +36,7 @@ namespace Services.Services
             new User{ UserName = "Admin", Password = "Password", Id = 1}
         };
 
+
         //private string _token { get; set; }
 
         //public UserService(string token)
@@ -43,73 +44,52 @@ namespace Services.Services
         //    _token = token;
         //}
         //
+
+        //lista de usuarios
         public async Task<IEnumerable<User>> GetAll() 
         {
             //para ir viendo todos los q existen
             return await _unitOfWork.UserRepository.GetAllAsync();
         }
         //
-        //
-        public async Task<User> GetById(int id)
+        
+        //login con verificacion de la password hashed
+        public async Task<string> Login(User user)
         {
-            //search por id
-            return await _unitOfWork.UserRepository.GetByIdAsync(id);
-        }
-
-        //func Login
-        //login vers base del prof.
-        /*public async Task <string> Login(User user)
-        {
-            //!*: deberiamos de usar los validators aqui tmb? or not?
-            //al iniciar sesion --- buscamos el usuario
-            var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName, user.Password);
-            //
+            //User user
             //var LoginUser = _users.SingleOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            
+            var lstUsers = (await _unitOfWork.UserRepository.GetAllAsync()).ToList();
 
-            if(LoginUser == null)
+            //var Logged = lstUsers.SingleOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            var Logged = await _unitOfWork.UserRepository.GetUser(user.UserName); // **??!!
+            //prueba (ver user repo modif.!!!!!!)
+            //var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName);
+
+            
+            //var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName);
+            //busca el usuario por username primero
+            if (Logged == null)
             {
                 return string.Empty;
             }
-            //verifico los datos del usuario; realmente deberia ser con encriptamiento y asi
-            //pero a efectos de este taller lo haremos asi, una vez verificados los datos del user
-            //con la clase handler del token (Jwt Bearer)
-            //hago la soperaciones necesairas para poder crear el propio token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            //<PackageReference Include="Microsoft.IdentityModel" Version="7.0.0" />
-            var key = Encoding.ASCII.GetBytes("6f4d75aab32aef76b24c058d1bf7b979");
-            var tokenDescriptor = new SecurityTokenDescriptor 
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, LoginUser.UserName),
-                    new Claim("id", LoginUser.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            string userToken = tokenHandler.WriteToken(token);
-            return userToken;
-        } */
 
-        
-        //login con verificacion de la password hashed
-        
-        public async Task<string> Login(User user)
-        {
-           //var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName); // Buscar solo por UserName
-
-            var LoginUser = await _unitOfWork.UserRepository.GetUser(user.UserName, user.Password);
-            //var LoginUser = _users.SingleOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
-
+            /*
+            
             if (LoginUser == null)
             {
                 return string.Empty;
             }
+            */
 
-            // Verificar la contraseña hasheada
-            var passwordVerificationResult = _passwordHasherService.VerifyPassword(LoginUser.Password, user.Password);
+            // verifica la contraseña hasheada con la password recibida
+            //var passwordVerificationResult = _passwordHasherService.VerifyPassword(LoginUser.Password, user.Password);
+            
+            //prueba Logged
+            //
+            var passwordVerificationResult = _passwordHasherService.VerifyPassword(Logged.Password, user.Password);
 
+            //ifso
             if (passwordVerificationResult == PasswordVerificationResult.Success)
             {
                 // --- Generamos el token JWT aqui ---
@@ -119,8 +99,8 @@ namespace Services.Services
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, LoginUser.UserName),
-                        new Claim("id", LoginUser.Id.ToString())
+                        new Claim(ClaimTypes.Name, Logged.UserName),
+                        new Claim("id", Logged.Id.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -258,14 +238,13 @@ namespace Services.Services
 
         //also Search
 
-        public async Task<User> SearchUser(string UserName, string Password){
-            User userFound = new();
-            var help = userFound.UserName;
-            var help2 = userFound.Password;
-            // ... working on this still
-            // ojito mañana tempranito lo pruebo y exploto pq sin internet no furula, pero
-            //al menos algo existe
-            return userFound;
+        public async Task<User> SearchUser(int id){
+            var userSearched = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            if (userSearched == null)
+            {
+                throw new Exception("Este usuario no existe!");
+            }
+            return userSearched;
         } 
     }
 }

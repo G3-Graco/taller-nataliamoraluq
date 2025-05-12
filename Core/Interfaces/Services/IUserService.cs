@@ -6,20 +6,21 @@ using Core.Entities;
 
 namespace Core.Interfaces.Services
 {
-    public interface IUserService 
+    public interface IUserService
     {
-        //: IBaseService<User> -> aqui nao, pq no haremos crud cm tal
-        //esta base tiene precisamente las bases para hacer el CRUD
+        //: IBaseService<User> -> para hacer getall e ir revisando que
+        //se esta guardando
         //CON LAS DEMAS entities
         // modificacion aqui, preguntar al prof
         //string
-        Task <string> Login(User user); //login hecho por el prof
-        //Task<User> Register(string UserName, string Password); 
-        //con el hasheo de password
-        Task<bool> Register(string UserName, string Password); 
+
+        Task<IEnumerable<User>> GetAll(); //lista para ver los registros existentes
+
+        Task <string> Login(User user); //iniciar sesion
+        Task<bool> Register(string UserName, string Password); //crear usuario
         // **
-        Task<User> SearchUser(string UserName, string Password); //en el repo: sql here
-        //Task<User> SearchById(int id); 
+        Task<User> SearchUser(int id); //consultar usuario
+        //NO por username pq para eso esta el login
         //Task<Entidad> GetById(int id);
         
     }

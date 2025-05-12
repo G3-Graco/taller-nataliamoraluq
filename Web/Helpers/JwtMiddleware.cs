@@ -40,7 +40,7 @@ namespace Web.Helpers
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var skey = _configuration["Jwt:Key"];
-                var key = Encoding.ASCII.GetBytes(skey); //se encripta? lleva a bytes el hey
+                var key = Encoding.ASCII.GetBytes(skey); //se encripta? lleva a bytes el key
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     //y se valida el token
