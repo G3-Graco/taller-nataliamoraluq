@@ -39,9 +39,12 @@ namespace TallerBlazorApp.Data
         public static async Task<Response<R>> Execute<R,T>(string endpoint, methodHttp methodHttp, T Data, string? token = null)
         {
             //string urlBaseApi = "http://gracosoftnet2025.runasp.net/api/";
-            string urlBaseApi = "https://localhost:7215/api/";
+            //string urlBaseApi = "https://localhost:7215/api/";
+            //
+            string urlBaseApi = "http://localhost:5025";
+            //
             //ojito aqui, con usar el local q es al correr la api
-        
+            //
             Response<R> response = new();
             try
             {
@@ -102,7 +105,12 @@ namespace TallerBlazorApp.Data
         public static async Task<Response<T>> Execute<T>(string endpoint, methodHttp methodHttp, T Data, string? token = null)
         {
             //string urlBaseApi = "http://gracosoftnet2025.runasp.net/api/";
-            string urlBaseApi = "https://localhost:7215/api/";
+            //string urlBaseApi = "https://localhost:7215/api/";
+            //
+            string urlBaseApi = "http://localhost:5025";
+            //
+            //ojito aqui, con usar el local q es al correr la api
+            //
             Response<T> response = new();
             try
             {

@@ -1,0 +1,44 @@
+﻿@page "/auth/login"
+
+@using TallerBlazorApp.Data.Auth
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
+@using Core.Entities
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject TokenContainer tokenContainer
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+
+
+<h3>Inicio de Sesión (Login)</h3>
+
+<EditForm Model="@authRequest" OnValidSubmit="HandleValidSubmit">
+    <div class="form-group d-flex flex-column">
+        <label>
+            <span>Usuario</span>
+            <InputText class="form-control" @bind-Value="authRequest!.UserName"/>
+        </label>
+        <label>
+            <span>Password</span>
+            <input type="password" @bind="authRequest!.Password" class="form-control" id="password" placeholder="Password">
+        </label>
+    </div>
+    <input class="btn btn-dark" type="submit" value="Enviar" />
+ 
+</EditForm>
+
+@code {
+    private User? authRequest = new User();
+
+    public async void HandleValidSubmit()
+    {
+        var authResponse = await AuthService.Login(authRequest!);
+        if (authResponse != null && authResponse.Ok)
+        {
+            tokenContainer.AsignarToken(authResponse.Message);
+            //await SessionStorage.SetItemAsync("token", authResponse.Message);
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(authResponse.Message);
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

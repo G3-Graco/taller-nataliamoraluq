@@ -1,0 +1,10 @@
+@page "/user/{id?}"
+
+@using TallerBlazorApp.Data.Auth
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
+@using Core.Entities
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject TokenContainer tokenContainer
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
