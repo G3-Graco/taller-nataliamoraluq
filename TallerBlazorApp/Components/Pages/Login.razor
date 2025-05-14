@@ -31,8 +31,10 @@
     </div>
     <!--<input class="btn btn-dark" type="submit" value="Enviar"/> -->
     <button class="btn btn-outline-primary" @onclick=HandleValidSubmit>Enviar</button>
+    <div>@mensaje</div>
 </EditForm>
 
+@*
 @code {
     private User? authRequest = new User();
     //private UserDTO? authRequest = new User();
@@ -48,7 +50,7 @@
             NavigationManager.NavigateTo("/");
         }
     }
-}
+}*@
 
 @code {
     private UserDTO? authRequest = new UserDTO();
@@ -56,11 +58,6 @@
     private string mensaje { get; set; } = string.Empty;
     public async void HandleValidSubmit()
     {
-        /*if(authRequest.UserName.Length < 4 && authRequest.Password.Length < 4)
-        {
-            //como deberia manejar esto?, ver la clase otra vez
-            return;
-        }*/
         
         var authResponse = await AuthService.Login(authRequest!);
         if (authResponse != null && authResponse.Ok)
@@ -72,7 +69,7 @@
         }
         else
         {
-            mensaje = "Error en el nombre de usuario o contraseña";
+            mensaje = "Error! nombre de usuario o contraseña incorrecta";
             claseMensaje = "alert alert-danger";
             StateHasChanged();
         }

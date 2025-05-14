@@ -3,13 +3,40 @@
 @using TallerBlazorApp.Data.Auth
 @using Microsoft.AspNetCore.Components
 @rendermode InteractiveServer
+@attribute [StreamRendering]
 @using Core.Entities
+@using Data.Models
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject TokenContainer tokenContainer
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
 
 <h3>Registro - Crear un nuevo usuario:</h3>
+
+<EditForm Model="@user"> 
+    <DataAnnotationsValidator/>
+    <div class="form-group d-flex flex-column">
+        <label>
+            <span>Username</span>
+            <InputText class="form-control" @bind-Value="user.UserName" />
+            <ValidationMessage For="() => user.UserName" class="alert alert-danger" />
+        </label>
+        <label>
+            <span>Password</span>
+            <InputText class="form-control" @bind-Value="user.Password" />
+            <ValidationMessage For="() => user.Password" class="alert alert-danger" />
+        </label>
+    </div>
+</EditForm> 
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button class="btn btn-secondary" @onclick=Register >Crear usuario</button>
+    <button class="btn btn-secondary" @onclick=Clear >Limpiar</button>
+</div>
+
+<div class="@claseMensaje" role="alert">
+    <h4>@mensaje</h4>
+</div>
 
 @*
 @code {

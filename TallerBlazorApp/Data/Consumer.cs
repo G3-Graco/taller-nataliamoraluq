@@ -66,33 +66,37 @@ namespace TallerBlazorApp.Data
                         Content = methodHttp != methodHttp.GET ? methodHttp != methodHttp.DELETE ? byteContent : null : null
                     }; 
                     //request.Content = byteContent;
-
-                    using(HttpResponseMessage responseApi = await client.SendAsync(request))
-                    {
-                        using(HttpContent content = responseApi.Content)
+                    if(token!=null){
+                        //
+                        client.DefaultRequestHeaders.Authorization =  new AuthenticationHeaderValue("Bearer", token);
+                        //
+                        using(HttpResponseMessage responseApi = await client.SendAsync(request))
                         {
-                            response.StatusCode = responseApi.StatusCode.ToString();
-
-                            string dataResponse = await content.ReadAsStringAsync();
-                            if (dataResponse != null)
+                            using(HttpContent content = responseApi.Content)
                             {
-                                try
+                                response.StatusCode = responseApi.StatusCode.ToString();
+
+                                string dataResponse = await content.ReadAsStringAsync();
+                                if (dataResponse != null)
                                 {
-                                    response.Data = JsonConvert.DeserializeObject<R>(dataResponse);
-                                    response.Ok = true;
-                                }
-                                catch (Exception ex)
-                                {
-                                    response.Ok = response.StatusCode != "400";
-                                    //
-                                    if(response.StatusCode == "InternalServerError" || response.StatusCode == "BadRequest")
-                                        response.Ok = false;
-                                    response.Message = dataResponse;
+                                    try
+                                    {
+                                        response.Data = JsonConvert.DeserializeObject<R>(dataResponse);
+                                        response.Ok = true;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        response.Ok = response.StatusCode != "400";
+                                        //
+                                        if(response.StatusCode == "InternalServerError" || response.StatusCode == "BadRequest")
+                                            response.Ok = false;
+                                        response.Message = dataResponse;
+                                    }
                                 }
                             }
-                        }
 
-                    };
+                        };
+                    }
                 }
 
 
