@@ -84,6 +84,14 @@ namespace Web.Controllers
         {
             try
             {
+                var context = HttpContext;
+                var userId = (int?)context.Items["id"]; //middleware; en el token enviamos iduser
+                
+                //probar y modificar: buscar por id desde el token
+                //var Userfound = await _userService.SearchUser((int)userId); //deberia de ser asi
+                // y con esta misma base para el update
+
+
                 var Userfound = await _userService.SearchUser(id);
                 return Ok(Userfound);
             }
@@ -93,6 +101,27 @@ namespace Web.Controllers
             }
         }
 
+        // --- UPDATE USER --- MODIFICAR USUARIO
+        /*[HttpPut]
+        public async Task<ActionResult<User>> Update([FromBody]User userToUp)
+        {
+            try
+            {
+                //
+                var context = HttpContext;
+                var userId = (int?)context.Items["id"]; //middleware; en el token esta el iduser a utilizar
+                //probar: this the plan but not tried yet
+                // OJO SELF NOTE: primero implementar en IUserService
+                //Luego en UserServiced y finalmente esto aqui
+                var userModified = await _userService.Update((int)userId, userToUp); //deberia de ser asi
+
+                return Ok(userModified);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }*/
 
     }
 }

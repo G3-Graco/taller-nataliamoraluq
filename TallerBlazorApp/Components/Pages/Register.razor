@@ -8,3 +8,23 @@
 @inject NavigationManager NavigationManager
 @inject TokenContainer tokenContainer
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Registro - Crear un nuevo usuario:</h3>
+
+@*
+@code {
+    private User? authRequest = new User();
+
+    public async void HandleValidSubmit()
+    {
+        var authResponse = await AuthService.Register(authRequest!);
+        if (authResponse != null && authResponse.Ok)
+        {
+            tokenContainer.AsignarToken(authResponse.Message);
+            //await SessionStorage.SetItemAsync("token", authResponse.Message);
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(authResponse.Message);
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}
+*@

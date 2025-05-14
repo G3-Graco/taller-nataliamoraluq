@@ -8,7 +8,9 @@
 
 
 @using Microsoft.AspNetCore.Components.Authorization
-
+<!-- para controlar ademas de los ciclos del vida, dentro del
+arbol de enrutamiento los cambios de estado; para el edo. de Autorizacion (State Container)
+-->
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">

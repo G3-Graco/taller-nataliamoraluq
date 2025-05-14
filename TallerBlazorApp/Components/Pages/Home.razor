@@ -1,17 +1,26 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
+@inject StateContainer stateContainer
+
 <PageTitle>Home</PageTitle>
+<!--<article style="border: 2px solid @borde">
+<h1 id="titulo1">Hello, world!</h1>
+</article> -->
 
 <h1>Taller de ASP.NET --- Natalia ML: </h1>
 <p>
+    Hola! Si ya cuentas con un usuario, ingresa tus datos para iniciar sesión <br>
+    Si no te has registrado aún, puedes hacerlo creando un nuevo usuario
     
+    <!--
     Integrar la autenticación de una Web API mediante la implementación de JSON Web Tokens (JWT)
     en .NET, agregando nuevos endpoints para gestionar usuarios, como crear y modificar usuario,
     además de los endpoints para iniciar sesión, validar sesión y cerrar sesión. <br>Además, se realizará la
     integración con una aplicación Web Blazor para validar páginas internas mediante el envío del JWT
     generado en el inicio de sesión y proporcionando páginas para crear usuario, modificar usuario e
     iniciar sesión.
-    
-    <!--<br>
+    <br>
     <li>Requisitos</li>
     <br>
     <ol>
@@ -23,3 +32,36 @@
         </li>
     </ol>--->
 </p>
+
+
+
+@code{
+    [CascadingParameter]
+    public string borde { get; set; } = string.Empty;
+    string mensaje = "La entrega es esta noche";
+
+    string mostrarModal { get; set; } = "none";
+
+    public Modal ModalDialog { get; set; }
+
+    private void ModificarMensaje(string msg)
+    {
+        mensaje = msg;           
+    }
+
+    private void ModificarMensajeClick()
+    {
+        mensaje = "click en componente ";
+    }
+
+    // protected override void OnInitialized()
+    // {
+    //     stateContainer.CambiarColor += StateHasChanged;
+    // }
+
+    // public void Dispose()
+    // {
+    //     stateContainer.CambiarColor -= StateHasChanged;
+
+    // }
+}

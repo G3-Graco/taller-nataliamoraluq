@@ -61,6 +61,8 @@ namespace Web.Helpers
                 //Attach user to context on successful JWT validation
                 //llamada a la base de datos
                 context.Items["ok"] = true;
+                context.Items["UserId"] = userId; //el id del user se lo enviamos desde el token
+                //la api se encarga de esto (lo conversado con el prof.)
             }
             catch
             {

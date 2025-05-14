@@ -1,35 +1,41 @@
 ﻿@page "/auth/login"
-
 @using TallerBlazorApp.Data.Auth
 @using Microsoft.AspNetCore.Components
 @rendermode InteractiveServer
 @using Core.Entities
+@using Data.Models
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject TokenContainer tokenContainer
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
 
-
 <h3>Inicio de Sesión (Login)</h3>
 
-<EditForm Model="@authRequest" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@authRequest">
+    <!-- 
+    OnValidSubmit="HandleValidSubmit"
+    -->
+    <DataAnnotationsValidator/>
     <div class="form-group d-flex flex-column">
         <label>
             <span>Usuario</span>
             <InputText class="form-control" @bind-Value="authRequest!.UserName"/>
+            <ValidationMessage For="() => authRequest!.UserName" class="alert alert-danger" />
         </label>
         <label>
-            <span>Password</span>
+            <span>Contraseña</span>
             <input type="password" @bind="authRequest!.Password" class="form-control" id="password" placeholder="Password">
+            <ValidationMessage For="() => authRequest!.UserName" class="alert alert-danger" />
         </label>
+        <!-- agg aqui los mensajitos con colores del entregable anterior!!!-->
     </div>
-    <input class="btn btn-dark" type="submit" value="Enviar" />
- 
+    <!--<input class="btn btn-dark" type="submit" value="Enviar"/> -->
+    <button class="btn btn-outline-primary" @onclick=HandleValidSubmit>Enviar</button>
 </EditForm>
 
 @code {
     private User? authRequest = new User();
-
+    //private UserDTO? authRequest = new User();
     public async void HandleValidSubmit()
     {
         var authResponse = await AuthService.Login(authRequest!);
@@ -37,8 +43,38 @@
         {
             tokenContainer.AsignarToken(authResponse.Message);
             //await SessionStorage.SetItemAsync("token", authResponse.Message);
+            //token llega aqui cm respuesta de la api al llamar al Login!
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(authResponse.Message);
             NavigationManager.NavigateTo("/");
+        }
+    }
+}
+
+@code {
+    private UserDTO? authRequest = new UserDTO();
+    private string claseMensaje { get; set; } = string.Empty;
+    private string mensaje { get; set; } = string.Empty;
+    public async void HandleValidSubmit()
+    {
+        /*if(authRequest.UserName.Length < 4 && authRequest.Password.Length < 4)
+        {
+            //como deberia manejar esto?, ver la clase otra vez
+            return;
+        }*/
+        
+        var authResponse = await AuthService.Login(authRequest!);
+        if (authResponse != null && authResponse.Ok)
+        {
+            tokenContainer.AsignarToken(authResponse.Message);
+            //await SessionStorage.SetItemAsync("token", authResponse.Message);
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(authResponse.Message);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            mensaje = "Error en el nombre de usuario o contraseña";
+            claseMensaje = "alert alert-danger";
+            StateHasChanged();
         }
     }
 }

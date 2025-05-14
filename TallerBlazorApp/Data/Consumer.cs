@@ -84,6 +84,9 @@ namespace TallerBlazorApp.Data
                                 catch (Exception ex)
                                 {
                                     response.Ok = response.StatusCode != "400";
+                                    //
+                                    if(response.StatusCode == "InternalServerError" || response.StatusCode == "BadRequest")
+                                        response.Ok = false;
                                     response.Message = dataResponse;
                                 }
                             }

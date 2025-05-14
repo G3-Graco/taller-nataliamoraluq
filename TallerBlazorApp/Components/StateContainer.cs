@@ -2,7 +2,6 @@
 {
     public class StateContainer
     {
-        //state container; --- base del repo del prof. Guille
         public string SelectedCssClass { get; private set; }
 
         public event Action CambiarColor;

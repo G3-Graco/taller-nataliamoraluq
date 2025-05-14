@@ -46,14 +46,14 @@ namespace TallerBlazorApp.Data.Auth
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwt = tokenHandler.ReadJwtToken(token);
-                var identity = new ClaimsIdentity(jwt.Claims, "jwt");
+                var identity = new ClaimsIdentity(jwt.Claims, "jwt"); //nombre y id del user
                 var user = new ClaimsPrincipal(identity);
                 var state = new AuthenticationState(user);
                 NotifyAuthenticationStateChanged(Task.FromResult(state));
             }
             catch (Exception ex)
             {
-
+                //
             }
         }
     }
