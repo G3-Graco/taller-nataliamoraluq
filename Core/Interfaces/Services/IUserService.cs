@@ -22,6 +22,10 @@ namespace Core.Interfaces.Services
         Task<User> SearchUser(int id); //consultar usuario
         //NO por username pq para eso esta el login
         //Task<Entidad> GetById(int id);
-        
+
+        //
+        // --- UPDATE ---
+        //
+        Task<User> Update(int userToBeUpdatedId, User newUser);
     }
 }

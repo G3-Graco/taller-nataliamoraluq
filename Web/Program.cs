@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "API Gracosoft .NET CORe",
+        Title = "API Gracosoft .NET Core",
         Description = "Aplicacion elaborada durante las clases del 1 al 9 de la asignatura .Net Core, se encarga del procesamiento de la logica de un videojuego RPG.",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact

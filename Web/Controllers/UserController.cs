@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
 using Core.Interfaces.Services;
+//
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Web.Controllers
 {
@@ -102,26 +105,31 @@ namespace Web.Controllers
         }
 
         // --- UPDATE USER --- MODIFICAR USUARIO
-        /*[HttpPut]
-        public async Task<ActionResult<User>> Update([FromBody]User userToUp)
+        [HttpPut]
+        public async Task<ActionResult<User>> Update([FromBody] User userToUp)
         {
             try
             {
-                //
+                
                 var context = HttpContext;
-                var userId = (int?)context.Items["id"]; //middleware; en el token esta el iduser a utilizar
+                var userId = (int?)context.Items["UserId"]; //middleware; en el token esta el UserId a utilizar
+                //context.Items["UserId"];
+                //
+                Console.WriteLine($"{userId}");
                 //probar: this the plan but not tried yet
                 // OJO SELF NOTE: primero implementar en IUserService
                 //Luego en UserServiced y finalmente esto aqui
+                
                 var userModified = await _userService.Update((int)userId, userToUp); //deberia de ser asi
 
+                //var userModified = await _userService.Update(userToUp.id, userToUp); //deberia de ser asi
                 return Ok(userModified);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
 
     }
 }
